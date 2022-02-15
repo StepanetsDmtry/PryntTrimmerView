@@ -119,7 +119,13 @@ class AssetVideoScrollView: UIScrollView {
         let timeIncrement = (asset.duration.seconds * 1000) / Double(numberOfThumbnails)
         var timesForThumbnails = [NSValue]()
         for index in 0..<numberOfThumbnails {
-            let cmTime = CMTime(value: Int64(timeIncrement * Float64(index)), timescale: 1000)
+            var value = Int64(timeIncrement * Float64(index))
+            
+            // To avoid black screen for the first thumbnail, starts from 2 seconds
+            if value == 0 {
+                value = 2000
+            }
+            let cmTime = CMTime(value: value, timescale: 1000)
             let nsValue = NSValue(time: cmTime)
             timesForThumbnails.append(nsValue)
         }
